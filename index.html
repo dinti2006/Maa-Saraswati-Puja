@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>श्री सरस्वती पूजा</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #ffe6f0;
+            min-height: 100vh;
+            overflow-x: hidden;
+            font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
+            position: relative;
+        }
+
+        .flower-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .flower-bg img {
+            position: absolute;
+            width: 50px;
+            opacity: 0.3;
+            animation: float 12s linear infinite;
+            filter: brightness(0.9);
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+            text-align: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: #d32f2f;
+            font-family: 'Noto Sans Devanagari', sans-serif;
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            margin: 1rem 0 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .saraswati-img {
+            width: clamp(280px, 60vw, 500px);
+            filter: drop-shadow(0 0 30px rgba(255,51,102,0.2));
+            margin: 2rem auto;
+            animation: glow 3s ease-in-out infinite;
+        }
+
+        .button-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+            margin: 3rem 0;
+        }
+
+        .action-btn {
+            padding: 14px 40px;
+            border: none;
+            border-radius: 30px;
+            background: linear-gradient(45deg, #d32f2f, #ff6666);
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(211,47,47,0.3);
+            width: clamp(240px, 70vw, 300px);
+        }
+
+        .action-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(211,47,47,0.4);
+        }
+
+        .diya-container {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: clamp(60px, 10vw, 100px);
+            cursor: pointer;
+        }
+
+        .diya {
+            width: 100%;
+            height: clamp(40px, 8vw, 60px);
+            background: linear-gradient(#ff9933, #cc6600);
+            border-radius: 0 0 50% 50%;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .flame {
+            width: 30%;
+            height: clamp(30px, 5vw, 40px);
+            background: linear-gradient(180deg, #ffd700, #ff6600 80%);
+            position: absolute;
+            top: -35%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 50% 50% 0 0;
+            opacity: 0;
+            transition: 0.3s;
+            filter: blur(2px);
+            animation: flicker 0.1s infinite alternate;
+        }
+
+        .diya.lit .flame {
+            opacity: 1;
+        }
+
+        .footer {
+            margin: 2rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            color: #d32f2f;
+        }
+
+        .social a {
+            color: #d32f2f;
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+            text-decoration: none;
+        }
+
+        .social a:hover {
+            transform: scale(1.2);
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            color: #ff6666;
+            margin-top: 1rem;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) rotate(0deg); }
+            100% { transform: translateY(-100vh) rotate(360deg); }
+        }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) scaleY(1); }
+            100% { transform: translateX(-50%) scaleY(0.9); }
+        }
+
+        @keyframes glow {
+            0%, 100% { filter: drop-shadow(0 0 20px rgba(211,47,47,0.3)); }
+            50% { filter: drop-shadow(0 0 40px rgba(211,47,47,0.5)); }
+        }
+
+        @media (max-width: 768px) {
+            .diya-container {
+                width: 70px;
+                top: 40%;
+            }
+            .action-btn {
+                padding: 12px 30px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Flowers -->
+    <div class="flower-bg" id="flowerBg"></div>
+
+    <!-- Left Diya -->
+    <div class="diya-container" style="left:5%" onclick="toggleDiya(this)">
+        <div class="diya">
+            <div class="flame"></div>
+        </div>
+    </div>
+
+    <!-- Right Diya -->
+    <div class="diya-container" style="right:5%" onclick="toggleDiya(this)">
+        <div class="diya">
+            <div class="flame"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>श्री सरस्वती पूजा</h1>
+        <p class="creator">Created by WebCrafters Hub</p>
+        
+        <img src="saraswati.png" class="saraswati-img" alt="Maa Saraswati">
+
+        <div class="button-container">
+            <button class="action-btn" onclick="offerFlower()">पुष्प अर्पित करें</button>
+            <button class="action-btn" onclick="playMantra()">मंत्र सुनें</button>
+        </div>
+
+        <div class="footer">
+            <div class="social">
+                Follow us:
+                <a href="https://www.instagram.com/webcrafters_hub/" target="_blank">
+                    <i class="fab fa-instagram"></i>
+                </a>
+            </div>
+            <p class="copyright">© 2025 WebCrafters Hub</p>
+        </div>
+    </div>
+
+    <audio id="mantra" src="mantra.mp3"></audio>
+
+    <script>
+        // Create background flowers
+        function createFlowers() {
+            const flowerBg = document.getElementById('flowerBg');
+            for(let i = 0; i < 60; i++) {
+                const flower = document.createElement('img');
+                flower.src = 'flower.png';
+                flower.style.left = Math.random() * 100 + '%';
+                flower.style.animationDelay = Math.random() * 15 + 's';
+                flower.style.width = (Math.random() * 40 + 30) + 'px';
+                flowerBg.appendChild(flower);
+            }
+        }
+
+        // Diya toggle
+        function toggleDiya(diyaContainer) {
+            const diya = diyaContainer.querySelector('.diya');
+            diya.classList.toggle('lit');
+        }
+
+        // Flower offering animation
+        function offerFlower() {
+            const saraswatiImg = document.querySelector('.saraswati-img');
+            const rect = saraswatiImg.getBoundingClientRect();
+            
+            for(let i = 0; i < 5; i++) {
+                const flower = document.createElement('img');
+                flower.src = 'flower.png';
+                flower.style.cssText = `
+                    position: fixed;
+                    width: 50px;
+                    bottom: 20%;
+                    left: ${50 + (Math.random() * 20 - 10)}%;
+                    opacity: 0;
+                    z-index: 3;
+                `;
+                
+                document.body.appendChild(flower);
+
+                anime({
+                    targets: flower,
+                    translateY: -(window.innerHeight * 0.5),
+                    translateX: () => anime.random(-50, 50),
+                    rotate: 720,
+                    opacity: [1, 0],
+                    duration: 2000,
+                    easing: 'easeOutQuad',
+                    complete: () => flower.remove()
+                });
+            }
+        }
+
+        // Mantra audio control
+        let isPlaying = false;
+        const audio = document.getElementById('mantra');
+        function playMantra() {
+            if(isPlaying) {
+                audio.pause();
+                isPlaying = false;
+            } else {
+                audio.play();
+                isPlaying = true;
+            }
+        }
+
+        // Initialize
+        window.addEventListener('load', createFlowers);
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@500;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+</body>
+</html>
