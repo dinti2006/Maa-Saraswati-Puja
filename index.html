@@ -2,15 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>श्री सरस्वती पूजा</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* CSS */
+        /* CSS Reset */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -19,8 +20,10 @@
             overflow-x: hidden;
             font-family: 'Poppins', 'Noto Sans Devanagari', sans-serif;
             position: relative;
+            touch-action: manipulation;
         }
 
+        /* Background Flowers */
         .flower-bg {
             position: fixed;
             width: 100%;
@@ -35,8 +38,10 @@
             opacity: 0.3;
             animation: float 12s linear infinite;
             filter: brightness(0.9);
+            user-select: none;
         }
 
+        /* Main Container */
         .container {
             position: relative;
             z-index: 2;
@@ -46,6 +51,7 @@
             margin: 0 auto;
         }
 
+        /* Header Section */
         h1 {
             color: #d32f2f;
             font-family: 'Noto Sans Devanagari', sans-serif;
@@ -54,13 +60,16 @@
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
         }
 
+        /* Saraswati Image */
         .saraswati-img {
             width: clamp(280px, 60vw, 500px);
             filter: drop-shadow(0 0 30px rgba(255,51,102,0.2));
             margin: 2rem auto;
             animation: glow 3s ease-in-out infinite;
+            user-select: none;
         }
 
+        /* Action Buttons */
         .button-container {
             display: flex;
             flex-direction: column;
@@ -80,13 +89,10 @@
             transition: all 0.3s;
             box-shadow: 0 4px 15px rgba(211,47,47,0.3);
             width: clamp(240px, 70vw, 300px);
+            touch-action: manipulation;
         }
 
-        .action-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(211,47,47,0.4);
-        }
-
+        /* Diya Elements */
         .diya-container {
             position: absolute;
             top: 50%;
@@ -94,6 +100,8 @@
             width: clamp(60px, 10vw, 100px);
             cursor: pointer;
             touch-action: manipulation;
+            user-select: none;
+            -webkit-user-drag: none;
         }
 
         .diya {
@@ -103,6 +111,11 @@
             border-radius: 0 0 50% 50%;
             position: relative;
             box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .diya:active {
+            transform: scale(0.95);
         }
 
         .flame {
@@ -112,18 +125,20 @@
             position: absolute;
             top: -35%;
             left: 50%;
-            transform: translateX(-50%);
+            transform: translateX(-50%) translateZ(0);
             border-radius: 50% 50% 0 0;
             opacity: 0;
-            transition: 0.3s;
             filter: blur(2px);
             animation: flicker 0.1s infinite alternate;
+            will-change: opacity;
         }
 
         .diya.lit .flame {
             opacity: 1;
+            transition: opacity 0.3s ease-in-out;
         }
 
+        /* Footer Section */
         .footer {
             margin: 2rem 0;
             display: flex;
@@ -145,10 +160,7 @@
             font-size: 1.5rem;
             transition: transform 0.3s;
             text-decoration: none;
-        }
-
-        .social a:hover {
-            transform: scale(1.2);
+            touch-action: manipulation;
         }
 
         .copyright {
@@ -157,6 +169,7 @@
             margin-top: 0.5rem;
         }
 
+        /* Animations */
         @keyframes float {
             0% { transform: translateY(100vh) rotate(0deg); }
             100% { transform: translateY(-100vh) rotate(360deg); }
@@ -172,6 +185,7 @@
             50% { filter: drop-shadow(0 0 40px rgba(211,47,47,0.5)); }
         }
 
+        /* Mobile Optimization */
         @media (max-width: 768px) {
             .diya-container {
                 width: 70px;
@@ -181,6 +195,9 @@
                 padding: 12px 30px;
                 font-size: 1rem;
             }
+            body {
+                -webkit-overflow-scrolling: touch;
+            }
         }
     </style>
 </head>
@@ -189,14 +206,14 @@
     <div class="flower-bg" id="flowerBg"></div>
 
     <!-- Left Diya -->
-    <div class="diya-container" style="left:5%" onclick="toggleDiya(this)">
+    <div class="diya-container" style="left:5%" onclick="toggleDiya(this)" ontouchstart="toggleDiya(this)">
         <div class="diya">
             <div class="flame"></div>
         </div>
     </div>
 
     <!-- Right Diya -->
-    <div class="diya-container" style="right:5%" onclick="toggleDiya(this)">
+    <div class="diya-container" style="right:5%" onclick="toggleDiya(this)" ontouchstart="toggleDiya(this)">
         <div class="diya">
             <div class="flame"></div>
         </div>
@@ -240,11 +257,16 @@
             }
         }
 
-        // Diya toggle (fixed for mobile)
+        // Diya toggle with mobile fix
         function toggleDiya(diyaContainer) {
             const diya = diyaContainer.querySelector('.diya');
             diya.classList.toggle('lit');
-            void diya.offsetWidth; // Force mobile repaint
+            
+            // Force mobile repaint
+            requestAnimationFrame(() => {
+                diya.style.transform = 'translateZ(0)';
+                void diya.offsetHeight;
+            });
         }
 
         // Flower offering animation
@@ -262,6 +284,7 @@
                     left: ${50 + (Math.random() * 20 - 10)}%;
                     opacity: 0;
                     z-index: 3;
+                    touch-action: none;
                 `;
                 
                 document.body.appendChild(flower);
@@ -294,6 +317,7 @@
 
         // Initialize
         window.addEventListener('load', createFlowers);
+        window.addEventListener('touchstart', function() {}, {passive: true});
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@500;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
